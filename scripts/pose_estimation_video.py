@@ -18,9 +18,19 @@ import argparse
 # 引数の設定
 parser = argparse.ArgumentParser()
 parser.add_argument('--input', required=True, help='入力動画ファイルパス')
-parser.add_argument('--output_with_pose', default='output_with_pose.mp4', help='棒人間を重ねた動画の出力先')
-parser.add_argument('--output_pose_only', default='pose_only.mp4', help='背景なし棒人間動画の出力先')
+parser.add_argument('--output_with_pose', default=None, help='棒人間を重ねた動画の出力先')
+parser.add_argument('--output_pose_only', default=None, help='背景なし棒人間動画の出力先')
 args = parser.parse_args()
+
+# 入力ファイル名（拡張子除く）を取得
+basename = os.path.splitext(os.path.basename(args.input))[0]
+
+# デフォルト値の補完
+if args.output_with_pose is None:
+    args.output_with_pose = f'{basename}_with_pose.mp4'
+
+if args.csv_output is None:
+    args.csv_output = f'{basename}_right_wrist_3d.csv'
 
 # MediaPipe pose の初期化
 mp_drawing = mp.solutions.drawing_utils
